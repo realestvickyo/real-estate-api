@@ -5,6 +5,10 @@ cat >> .gitignore << 'EOF'
 .env.backup
 .env.production
 
+node_modules/
+vendor/
+.env
+
 .postman/
 postman/
 vendor/
