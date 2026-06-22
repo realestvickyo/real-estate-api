@@ -4,10 +4,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite",
         "dev": "npx ts-node server.ts",
-    "register": "npx ts-node scripts/register-secret.ts",
-    "generate-wallet": "npx ts-node scripts/generate-wallet.ts"
+        "register": "npx ts-node scripts/register-secret.ts",
+        "generate-wallet": "npx ts-node scripts/generate-wallet.ts"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
@@ -39,6 +38,7 @@
         "@circle-fin/smart-contract-platform": "^10.6.0",
         "@supabase/supabase-js": "^2.108.2",
         "dotenv": "^17.4.2",
+        "jspdf": "^4.2.1",
         "openai": "^6.43.0"
     }
 }
