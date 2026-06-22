@@ -15,10 +15,17 @@ class Payment extends Model
         'user_id',
         'property_id',
         'amount',
+        'payment_reference',
+        'metadata',
         'merchant_request_id',
         'checkout_request_id',
         'receipt_number',
         'status',
+    ];
+
+    protected $casts = [
+        'amount'   => 'float',
+        'metadata' => 'array',  // Important: automatically converts JSON to array
     ];
 
     public function agency(): BelongsTo

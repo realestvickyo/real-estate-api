@@ -44,5 +44,7 @@ return [
         'initiator_name' => env('MPESA_INITIATOR_NAME'),
         'initiator_password' => env('MPESA_INITIATOR_PASSWORD'),
     ],
-
+    'paystack' => [
+        'secret_key' => env('PAYSTACK_SECRET_KEY'),
+    ],
 ];
