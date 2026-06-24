@@ -35,9 +35,14 @@ class EscrowService
             'funded_at'     => now(),
         ]);
 
-        // 2. Automatically advance the Lead's CRM stage
+        // 2. Automatically advance the Lead's CRM stage to 'closed'
+        // This ensures the card locks on your Kanban board automatically
         if ($transaction->lead) {
-            $transaction->lead->update(['kanban_stage' => 'escrow']);
+            $transaction->lead->update([
+                'kanban_stage' => 'closed'
+            ]);
+            
+            Log::info("Lead ID {$transaction->lead_id} has been moved to 'closed' status via successful escrow funding.");
         }
 
         // 3. Trigger domain events (e.g., for notifications)

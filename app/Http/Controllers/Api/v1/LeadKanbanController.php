@@ -11,13 +11,21 @@ class LeadKanbanController extends Controller
 {
     public function update(Request $request, Lead $lead): JsonResponse
     {
+        // 1. DEFENSIVE GUARDRAIL: Prevent any modification if the deal is closed
+        if ($lead->kanban_stage === 'closed') {
+            return response()->json([
+                'error' => 'Permission Denied',
+                'message' => 'This deal is settled and locked. It cannot be reverted or modified.'
+            ], 403);
+        }
+
+        // 2. Validate the incoming stage
         $validated = $request->validate([
             'kanban_stage' => 'required|string|in:new,contacted,showing,offer,escrow,closed,lost'
         ]);
 
+        // 3. Update the stage
         $lead->update(['kanban_stage' => $validated['kanban_stage']]);
-
-        // Trigger events here if needed (e.g., LeadMovedToEscrow Event)
 
         return response()->json([
             'message' => 'Stage updated successfully',

@@ -1,1 +1,15 @@
-gi
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build assets
+public/build/
+public/hot
+public/storage/
+
+# Composer
+/vendor/
+
+# Node
+/node_modules/

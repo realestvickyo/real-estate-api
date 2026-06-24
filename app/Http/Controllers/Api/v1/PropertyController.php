@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api\v1;
-use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Http\Requests\Property\StorePropertyRequest;
@@ -14,25 +14,26 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class PropertyController extends Controller
 {
     /**
-     * GET /v1/properties?page=1
-     * Called by propertyApi.getAll() on the frontend.
+     * GET /v1/agent/properties?page=1
+     * Called by propertyApi to populate the dashboard grid layout.
      */
     public function index(): AnonymousResourceCollection
     {
+        // Fetches your database seeders, paginated by 20 entries
         $properties = Property::latest()->paginate(20);
 
         return PropertyResource::collection($properties);
     }
 
     /**
-     * POST /v1/properties
+     * POST /v1/agent/properties
      */
     public function store(StorePropertyRequest $request): JsonResponse
     {
         $property = Property::create([
             ...$request->validated(),
             'user_id' => Auth::id(),
-            'agncy_id' => Auth::user()->agency_id
+            'agency_id' => Auth::user()->agency_id // Fixed: Changed 'agncy_id' to 'agency_id'
         ]);
 
         return (new PropertyResource($property))
@@ -41,7 +42,7 @@ class PropertyController extends Controller
     }
 
     /**
-     * GET /v1/properties/{property}
+     * GET /v1/agent/properties/{property}
      * Bulletproofed to handle both implicit model instances and raw IDs safely.
      */
     public function show(mixed $property): JsonResponse
@@ -60,7 +61,7 @@ class PropertyController extends Controller
 
         // Force ensure status has a fallback value for the frontend canvas
         if (empty($property->status)) {
-            $property->status = 'active';
+            $property->status = 'available';
         }
 
         return (new PropertyResource($property->load('images')))
@@ -68,7 +69,7 @@ class PropertyController extends Controller
     }
 
     /**
-     * PUT /v1/properties/{property}
+     * PUT /v1/agent/properties/{property}
      */
     public function update(UpdatePropertyRequest $request, mixed $property): JsonResponse
     {
@@ -85,7 +86,7 @@ class PropertyController extends Controller
     }
 
     /**
-     * DELETE /v1/properties/{property}
+     * DELETE /v1/agent/properties/{property}
      */
     public function destroy(mixed $property): JsonResponse
     {
